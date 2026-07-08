@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>중1 수학 복습 게임월드</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <p class="hero-badge">수학 게임월드 입장</p>
+        <h1>중1 수학 복습 게임월드</h1>
+        <p class="hero-subtitle">1학기 수학 개념을 게임으로 다시 만나보세요!</p>
+        <p class="hero-guide">
+          단원별 미니게임을 선택해 1학기 수학을 복습해 봅시다.
+        </p>
+      </header>
+
+      <main class="content">
+        <section class="game-section" aria-labelledby="game-section-title">
+          <div class="section-title">
+            <h2 id="game-section-title">게임 선택하기</h2>
+            <p>어떤 게임을 해볼까? 오늘의 복습 목표를 골라보세요.</p>
+          </div>
+          <div id="game-list" class="game-grid" aria-live="polite"></div>
+        </section>
+      </main>
+
+      <footer class="footer-note">
+        <p>현재는 소인수분해 게임부터 순서대로 제작 중입니다.</p>
+      </footer>
+    </div>
+
+    <div id="info-modal" class="modal" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <h3 id="modal-title">알림</h3>
+        <p id="modal-message"></p>
+        <button id="close-modal" class="modal-button" type="button">닫기</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

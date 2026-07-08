@@ -1,0 +1,627 @@
+/* 기본 변수 및 초기화 */
+:root {
+    --bg-gradient: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%);
+    --primary-color: #4f46e5;
+    --primary-hover: #4338ca;
+    --prime-color: #10b981;
+    --prime-hover: #059669;
+    --composite-color: #ef4444;
+    --composite-hover: #dc2626;
+    --text-color: #1e293b;
+    --box-bg: #ffffff;
+    --notebook-bg: #f8fafc;
+    --border-color: #cbd5e1;
+    --font-main: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-main);
+    background: var(--bg-gradient);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* 게임 메인 컨테이너 */
+.game-container {
+    width: 100%;
+    max-width: 950px;
+    background: var(--box-bg);
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    padding: 30px;
+    min-height: 600px;
+    overflow: hidden;
+    position: relative;
+}
+
+.top-nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.nav-tab {
+    border: none;
+    border-radius: 999px;
+    padding: 8px 14px;
+    background: #eef2ff;
+    color: var(--primary-color);
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.nav-tab:hover {
+    background: #e0e7ff;
+    transform: translateY(-1px);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* 화면 전환 시스템 */
+.screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.screen.active {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 타이틀 및 폰트 스타일 */
+.title-container {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.game-title {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: #64748b;
+}
+
+/* 안내 박스 */
+.intro-box {
+    background: #f1f5f9;
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 35px;
+    max-width: 600px;
+    width: 100%;
+    border-left: 6px solid var(--primary-color);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.intro-text {
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+/* 버튼 스타일 */
+.btn {
+    font-family: var(--font-main);
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-large {
+    padding: 16px 40px;
+    font-size: 1.3rem;
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 6px 15px rgba(79, 70, 229, 0.3);
+}
+
+.btn-large:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
+}
+
+.btn-choice {
+    padding: 20px 40px;
+    font-size: 1.4rem;
+    color: white;
+    min-width: 240px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+.btn-prime { background: var(--prime-color); }
+.btn-prime:hover { background: var(--prime-hover); transform: translateY(-2px); }
+
+.btn-composite { background: var(--composite-color); }
+.btn-composite:hover { background: var(--composite-hover); transform: translateY(-2px); }
+
+.btn-main {
+    background: var(--primary-color);
+    color: white;
+    padding: 12px 24px;
+    font-size: 1.05rem;
+}
+.btn-main:hover { background: var(--primary-hover); }
+
+.btn-sub {
+    background: #e2e8f0;
+    color: #475569;
+    padding: 12px 24px;
+    font-size: 1.05rem;
+}
+.btn-sub:hover { background: #cbd5e1; }
+
+.btn-danger {
+    background: #f87171;
+    color: white;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+}
+.btn-danger:hover { background: #ef4444; }
+
+.btn-next {
+    background: #f59e0b;
+    color: white;
+    padding: 14px 35px;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
+}
+.btn-next:hover { background: #d97706; transform: scale(1.03); }
+
+/* 상단 정보 바 */
+.status-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background: #f8fafc;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+.status-item {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #475569;
+}
+
+/* 몬스터 디자인 영역 */
+.monster-zone {
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    position: relative;
+    width: 100%;
+}
+
+.monster {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+/* 귀여운 CSS 몬스터 캐릭터 */
+.monster-body {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+    border-radius: 50% 50% 45% 45%;
+    position: relative;
+    box-shadow: inset -8px -8px 0px rgba(0,0,0,0.1), 0 8px 15px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+/* 소수 몬스터와 합성수 몬스터의 색상 차별화용 클래스(JS 분기) */
+.monster.type-prime .monster-body {
+    background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+}
+.monster.type-composite .monster-body {
+    background: linear-gradient(135deg, #f857a6 0%, #ff5858 100%);
+}
+
+.monster-horns {
+    position: absolute;
+    top: -15px;
+    width: 100px;
+    display: flex;
+    justify-content: space-between;
+    z-index: 1;
+}
+
+.horn {
+    width: 20px;
+    height: 30px;
+    background: #e2e8f0;
+    border-radius: 50% 50% 0 0;
+}
+.horn.left { transform: rotate(-20px); border-top-left-radius: 90%; background: #334155;}
+.horn.right { transform: rotate(20px); border-top-right-radius: 90%; background: #334155;}
+
+.monster-eyes {
+    position: absolute;
+    top: 25px;
+    width: 70px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.eye {
+    width: 22px;
+    height: 22px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pupil {
+    width: 10px;
+    height: 10px;
+    background: #0f172a;
+    border-radius: 50%;
+}
+
+.monster-number {
+    font-size: 2rem;
+    font-weight: 900;
+    color: white;
+    margin-top: 35px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    z-index: 5;
+}
+
+.monster-shadow {
+    width: 90px;
+    height: 12px;
+    background: rgba(0,0,0,0.15);
+    border-radius: 50%;
+    margin-top: 8px;
+    filter: blur(1px);
+}
+
+/* 몬스터 애니메이션 효과 */
+.shake {
+    animation: shakeAnim 0.5s ease-in-out;
+}
+@keyframes shakeAnim {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-10px); }
+    40%, 80% { transform: translateX(10px); }
+}
+
+.sparkle {
+    animation: sparkleAnim 0.6s infinite alternate;
+}
+@keyframes sparkleAnim {
+    0% { transform: scale(1); filter: brightness(1); }
+    100% { transform: scale(1.1); filter: brightness(1.3) drop-shadow(0 0 15px rgba(255,215,0,0.8)); }
+}
+
+/* 질문창 */
+.question-container {
+    margin-bottom: 20px;
+    text-align: center;
+}
+#question-text {
+    font-size: 1.35rem;
+    color: #1e293b;
+}
+
+/* 피드백 박스 */
+.feedback-box {
+    width: 100%;
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    text-align: center;
+    border: 1px solid transparent;
+}
+.feedback-box.success {
+    background-color: #ecfdf5;
+    color: #065f46;
+    border-color: #a7f3d0;
+}
+.feedback-box.wrong {
+    background-color: #fef2f2;
+    color: #991b1b;
+    border-color: #fecaca;
+}
+.hidden { display: none !important; }
+
+/* 제어 영역 분할 */
+.control-zone {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.control-panel {
+    display: none;
+    width: 100%;
+    justify-content: center;
+    gap: 20px;
+}
+.control-panel.active {
+    display: flex;
+}
+
+/* 소인수분해 레이아웃 (연구 노트 + 카드 컨트롤러) */
+.factor-game-layout {
+    display: flex;
+    width: 100%;
+    gap: 25px;
+}
+
+/* 연구 노트 (ㄴ자 나눗셈 기록판) */
+.notebook-area {
+    flex: 1.1;
+    background: var(--notebook-bg);
+    border: 2px dashed #94a3b8;
+    border-radius: 16px;
+    padding: 20px;
+    min-height: 280px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
+}
+
+.notebook-area h3 {
+    font-size: 1.1rem;
+    color: #475569;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #cbd5e1;
+    padding-bottom: 5px;
+}
+
+.division-board {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 30px;
+    font-size: 1.35rem;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace, var(--font-main);
+    line-height: 1.5;
+}
+
+/* ㄴ자 나눗셈 한 행 디자인 */
+.div-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2px;
+}
+.div-divisor {
+    width: 40px;
+    text-align: right;
+    color: #2563eb;
+    padding-right: 8px;
+}
+.div-structure {
+    border-left: 3px solid #475569;
+    border-bottom: 3px solid #475569;
+    padding: 2px 12px 2px 8px;
+    min-width: 60px;
+    text-align: left;
+}
+.div-quotient-only {
+    padding-left: 43px;
+    color: #475569;
+    margin-top: 2px;
+}
+
+.division-status {
+    margin-top: 15px;
+    font-weight: bold;
+    color: #059669;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+/* 입력 제어 공간 (오른쪽) */
+.input-area {
+    flex: 0.9;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.section-label {
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: #64748b;
+    margin-bottom: 8px;
+}
+
+/* 분해 소수 카드 버튼 */
+.prime-buttons-container {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-prime-card {
+    background: #ffffff;
+    border: 2px solid #cbd5e1;
+    border-radius: 12px;
+    width: 54px;
+    height: 54px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #334155;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+    transition: all 0.15s ease;
+}
+.btn-prime-card:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background: #f5f3ff;
+    transform: translateY(-2px);
+}
+.btn-prime-card:active {
+    transform: translateY(0);
+}
+
+/* 최종 제출 창 */
+.final-answer-section {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 15px;
+    transition: all 0.3s ease;
+}
+.final-answer-section.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.answer-box {
+    background: white;
+    border: 2px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 8px;
+    min-height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.empty-answer {
+    color: #94a3b8;
+    font-size: 0.95rem;
+    font-weight: normal;
+}
+
+.hint-text {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-bottom: 12px;
+}
+
+.answer-actions {
+    display: flex;
+    gap: 10px;
+}
+.answer-actions .btn {
+    flex: 1;
+}
+
+.division-actions {
+    margin-top: 5px;
+    text-align: right;
+}
+.division-actions .btn {
+    width: 100%;
+}
+
+.next-zone {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+/* 결과 화면 디테일 */
+.result-title {
+    font-size: 2.2rem;
+    color: #1e293b;
+    margin-bottom: 25px;
+}
+
+.score-board {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.final-score {
+    font-size: 3.8rem;
+    font-weight: 900;
+    color: var(--primary-color);
+}
+.evaluation-text {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #475569;
+    margin-top: 5px;
+}
+
+.result-stats {
+    width: 100%;
+    max-width: 450px;
+    background: #f1f5f9;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 35px;
+}
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 1.05rem;
+}
+.stat-row:last-child {
+    border-bottom: none;
+}
+.stat-row strong {
+    font-size: 1.1rem;
+    color: #1e293b;
+}
+.warning-text {
+    color: #ef4444 !important;
+}
+
+.result-actions {
+    display: flex;
+    gap: 15px;
+}
+
+/* 모바일 유연성 확대 (태블릿 스케일 대응) */
+@media (max-width: 768px) {
+    .factor-game-layout {
+        flex-direction: column;
+    }
+    .game-container {
+        padding: 20px;
+    }
+}

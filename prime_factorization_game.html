@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>소수 몬스터 잡기</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      body {
+        margin: 0;
+      }
+
+      .game-page {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      .game-panel {
+        width: min(720px, 100%);
+        padding: 32px;
+        border-radius: 28px;
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 20px 50px rgba(68, 86, 122, 0.16);
+        text-align: center;
+      }
+
+      .game-panel h1 {
+        margin: 0 0 12px;
+        font-size: clamp(1.6rem, 3vw, 2.3rem);
+      }
+
+      .game-panel p {
+        margin: 0 0 18px;
+        color: var(--text-soft);
+        line-height: 1.7;
+      }
+
+      .back-button {
+        border: none;
+        border-radius: 999px;
+        padding: 11px 18px;
+        background: var(--accent);
+        color: white;
+        cursor: pointer;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="game-page">
+      <section class="game-panel">
+        <h1>소수 몬스터 잡기</h1>
+        <p>
+          이 화면은 다음 단계에서 실제 소인수분해 게임으로 연결될 자리입니다.
+          지금은 게임 화면 진입이 잘 되는지 확인하는 임시 페이지입니다.
+        </p>
+        <button class="back-button" type="button" onclick="window.location.href='index.html'">
+          로비로 돌아가기
+        </button>
+      </section>
+    </div>
+  </body>
+</html>

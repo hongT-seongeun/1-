@@ -1,0 +1,77 @@
+<!-- ... existing code ... -->
+        <!-- ==================== [ 2. 게임 메인 화면 ] ==================== -->
+        <div id="screen-play" class="hidden flex-1 flex flex-col bg-[#f0f4f8] relative">
+            
+            <!-- (상단 바) 점수, 레벨, 콤보, 타이머 정보 -->
+            <header class="bg-white px-4 py-3 shadow-sm flex items-center justify-between z-10">
+                <!-- 홈으로 돌아가는 버튼 추가 -->
+                <button onclick="goToHome()" class="text-slate-400 hover:text-sky-500 p-2 rounded-full hover:bg-sky-50 transition-all">
+                    🏠
+                </button>
+
+                <!-- x좌표/y좌표 진행 표시줄 및 레벨 뱃지 -->
+<!-- ... existing code ... -->
+        <!-- ==================== [ 5. 좌표평면 가이드 북 (도움말) ] ==================== -->
+        <div id="help-modal" class="hidden absolute inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+<!-- ... existing code ... -->
+                <button onclick="closeHelpModal()" class="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-2.5 rounded-xl transition-all">
+                    확인완료! 다시 일하러 가기
+                </button>
+            </div>
+        </div>
+
+        <!-- [신규 추가] 게임 시작 가이드 모달 -->
+        <div id="intro-modal" class="hidden absolute inset-0 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+            <div class="bg-white rounded-3xl w-full max-w-sm p-6 shadow-2xl flex flex-col items-center border-t-8 border-amber-400">
+                <div class="text-5xl mb-4">🚁</div>
+                <h3 class="text-xl font-black text-slate-800">배송 업무 안내</h3>
+                <p class="text-slate-600 text-sm mt-3 text-center leading-relaxed">
+                    본부에서 배송 신호가 떨어지면!<br>
+                    정확한 <b>(x, y) 좌표</b>를 읽고 기입하세요.<br><br>
+                    2단계에서는 지도의 교점을 <b>직접 터치</b>하여<br>
+                    드론을 안전하게 배송시키면 미션 성공입니다!
+                </p>
+                <button onclick="startActualGame()" class="w-full mt-6 bg-amber-400 hover:bg-amber-500 text-slate-900 font-black py-4 rounded-2xl shadow-lg border-b-4 border-amber-600 active:border-b-0 active:translate-y-[4px] transition-all">
+                    배송 현장으로 출발! ▶
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 오디오 이펙트 대체용 Web Audio API 음향 생성기 -->
+<!-- ... existing code ... -->
+        // 게임 시작 (안내 모달 띄우기)
+        function startGame() {
+            document.getElementById('intro-modal').classList.remove('hidden');
+        }
+
+        // 실제 게임 로직 시작
+        function startActualGame() {
+            document.getElementById('intro-modal').classList.add('hidden');
+            document.getElementById('screen-home').classList.add('hidden');
+            document.getElementById('screen-play').classList.remove('hidden');
+            
+            gameState.score = 0;
+            gameState.combo = 0;
+            gameState.maxCombo = 0;
+            gameState.successCount = 0;
+            gameState.totalSuccessCount = 0;
+            gameState.totalDeliveryTime = 0;
+            gameState.level = 1;
+
+            resizeCanvas();
+            loadLevel(1);
+        }
+
+        // 레벨 전환
+        function loadLevel(lv) {
+<!-- ... existing code ... -->
+```
+
+### 주요 변경 사항:
+1.  **홈 버튼 추가**: 게임 플레이 화면(`screen-play`) 상단바 왼쪽에 홈 아이콘 버튼(`🏠`)을 배치했습니다. 클릭 시 `goToHome()` 함수가 실행되어 메인 화면으로 돌아갑니다.
+2.  **시작 가이드 모달(`intro-modal`)**: `startGame()`을 호출하면 바로 게임이 시작되지 않고, 게임 규칙을 짧게 설명하는 모달이 먼저 뜹니다.
+3.  **로직 분리**: 기존 `startGame()` 로직을 모달을 여는 함수로 변경하고, 실제 게임 시작 로직은 `startActualGame()`으로 옮겼습니다.
+
+수정된 내용을 코드 파일에 적용해 보세요! 잘 작동할 것입니다.

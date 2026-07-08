@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상어 수학 격파 왕! - 정수와 유리수 계산 게임</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div class="top-nav" aria-label="게임 이동 메뉴">
+        <button id="btn-back-to-lobby" class="nav-tab" type="button">🏠 로비로 가기</button>
+        <button id="btn-go-to-start" class="nav-tab hidden" type="button">📋 시작화면으로</button>
+        <button id="btn-reset-game" class="nav-tab hidden" type="button">🔄 처음으로</button>
+    </div>
+
+    <div class="page-shell">
+      <div id="game-viewport">
+        <!-- 빛줄기 효과 -->
+        <div class="sunbeam"></div>
+        
+        <!-- 바다속 바닥 및 해초 풍경 -->
+        <div id="ocean-floor">
+            <div class="seaweed" style="left:5%;"></div>
+            <div class="seaweed" style="left:12%;"></div>
+            <div class="seaweed" style="left:22%;"></div>
+            <span class="starfish" style="left:28%;">⭐</span>
+            <div class="seaweed" style="left:40%;"></div>
+            <div class="seaweed" style="left:55%;"></div>
+            <span class="starfish" style="left:68%; animation-delay: -1.5s;">⭐</span>
+            <div class="seaweed" style="left:78%;"></div>
+            <div class="seaweed" style="left:88%;"></div>
+            <div class="seaweed" style="left:94%;"></div>
+        </div>
+
+        <!-- 파스텔 바다 방울 배경 레이어 -->
+        <div id="bubble-layer"></div>
+
+        <!-- [SCREEN 1] 귀여운 시작 화면 -->
+        <div id="start-screen" class="screen active">
+            <span class="deco-shark" style="top: 15%; left: 10%;">🦈</span>
+            <span class="deco-shark" style="bottom: 20%; right: 10%; transform: scaleX(-1);">🦈</span>
+            <div class="title-container">
+                <h1 class="game-title">상어 수학 격파왕</h1>
+                <p class="game-subtitle">🦈 정수와 유리수의 사칙연산을 정복해봐요! 🦈</p>
+            </div>
+            <button class="btn-start" onclick="initAndStartGame()">바다 탐험 시작 <i class="fa-solid fa-play"></i></button>
+        </div>
+
+        <!-- [SCREEN 2] 인게임 상태창(HUD) 및 게임판 -->
+        <div id="play-area" class="screen hidden">
+            <!-- 상단 바 정보 표시 -->
+            <div id="hud-bar">
+                <div class="hud-item">
+                    <span>체력:</span>
+                    <span id="hearts-container">
+                        <!-- 하트 5개 렌더링 -->
+                    </span>
+                </div>
+                <div class="hud-item" style="border-color: #ffd166;">
+                    <i class="fa-solid fa-hourglass-half" style="color: #ffd166;"></i>
+                    <span id="timer-display">시간: 60s</span>
+                </div>
+                <div class="hud-item" style="border-color: #06d6a0;">
+                    <i class="fa-solid fa-star" style="color: #ffca3a;"></i>
+                    <span id="score-display">점수: 0점</span>
+                </div>
+            </div>
+
+            <!-- 상어들이 소환되어 움직이는 구역 -->
+            <div id="ocean-tank" style="width:100%; height:100%; position:relative;"></div>
+        </div>
+
+        <!-- [SCREEN 3] 잠수함 계산 키패드 Overlay (팝업식) -->
+        <div id="numpad-overlay" class="hidden">
+            <div class="numpad-window">
+                <!-- 키패드를 닫을 수 있는 X 단추 추가 -->
+                <button class="btn-close-numpad" onclick="closeNumpad()"><i class="fa-solid fa-xmark"></i></button>
+                
+                <div class="numpad-title">
+                    <span class="numpad-icon"><i class="fa-solid fa-calculator"></i></span> 
+                    <span id="numpad-question-text">(-3) + (+5) = ?</span>
+                </div>
+                
+                <!-- 맞춤형 힌트 메시지 박스 -->
+                <div id="hint-box"></div>
+                
+                <div class="numpad-display" id="numpad-display-text"></div>
+                <div class="numpad-grid">
+                    <!-- 숫자 및 음수 부호 버튼들 -->
+                    <button class="num-btn" onclick="pressKey('7')">7</button>
+                    <button class="num-btn" onclick="pressKey('8')">8</button>
+                    <button class="num-btn" onclick="pressKey('9')">9</button>
+                    
+                    <button class="num-btn" onclick="pressKey('4')">4</button>
+                    <button class="num-btn" onclick="pressKey('5')">5</button>
+                    <button class="num-btn" onclick="pressKey('6')">6</button>
+                    
+                    <button class="num-btn" onclick="pressKey('1')">1</button>
+                    <button class="num-btn" onclick="pressKey('2')">2</button>
+                    <button class="num-btn" onclick="pressKey('3')">3</button>
+                    
+                    <button class="num-btn btn-op" onclick="pressKey('-')">-</button>
+                    <button class="num-btn" onclick="pressKey('0')">0</button>
+                    <button class="num-btn btn-op btn-clear" onclick="pressKey('C')"><i class="fa-solid fa-trash-can"></i></button>
+                    
+                    <button class="num-btn btn-op btn-back" onclick="pressKey('back')"><i class="fa-solid fa-delete-left"></i></button>
+                    <button class="num-btn btn-enter" onclick="submitAnswer()">정답 확인!</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- [SCREEN 4] 결과 (Game Over / Clear) 화면 -->
+        <div id="gameover-screen" class="screen hidden">
+            <h1 id="game-result-title" style="font-size: 64px; color: white; margin-bottom: 20px;">GAME OVER</h1>
+            <div class="result-container">
+                <h2 class="score-headline"><span id="final-score-val">0</span> 점</h2>
+                <div class="score-info" id="final-stats-info">격파한 상어: 0마리</div>
+                <div class="score-info" style="color: #caf0f8;" id="final-comment">부호 계산의 마법사시군요!</div>
+            </div>
+            <div class="result-actions">
+                <button class="btn-restart" onclick="initAndStartGame()">다시 도전하기 <i class="fa-solid fa-arrow-rotate-right"></i></button>
+            </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
