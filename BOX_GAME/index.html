@@ -1,77 +1,125 @@
-<!-- ... existing code ... -->
-        <!-- ==================== [ 2. 게임 메인 화면 ] ==================== -->
-        <div id="screen-play" class="hidden flex-1 flex flex-col bg-[#f0f4f8] relative">
-            
-            <!-- (상단 바) 점수, 레벨, 콤보, 타이머 정보 -->
-            <header class="bg-white px-4 py-3 shadow-sm flex items-center justify-between z-10">
-                <!-- 홈으로 돌아가는 버튼 추가 -->
-                <button onclick="goToHome()" class="text-slate-400 hover:text-sky-500 p-2 rounded-full hover:bg-sky-50 transition-all">
-                    🏠
-                </button>
-
-                <!-- x좌표/y좌표 진행 표시줄 및 레벨 뱃지 -->
-<!-- ... existing code ... -->
-        <!-- ==================== [ 5. 좌표평면 가이드 북 (도움말) ] ==================== -->
-        <div id="help-modal" class="hidden absolute inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-<!-- ... existing code ... -->
-                <button onclick="closeHelpModal()" class="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-2.5 rounded-xl transition-all">
-                    확인완료! 다시 일하러 가기
-                </button>
-            </div>
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>박스 좌표 배송</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="app" class="app">
+      <section id="screen-home" class="screen screen-home">
+        <a class="lobby-link" href="../index.html">← 로비</a>
+        <div class="home-card">
+          <div class="hero-icon">📦</div>
+          <p class="subject">중학교 1학년 | 좌표평면과 그래프</p>
+          <h1>박스 좌표 배송</h1>
+          <p class="home-copy">
+            반짝이는 배송 요청 지점의 순서쌍을 읽고, 요청 메시지에 나온
+            목적지 좌표로 박스를 배송하세요.
+          </p>
+          <div class="mini-rules">
+            <span>요청 지점 확인</span>
+            <span>순서쌍 입력</span>
+            <span>목적지 점 찍기</span>
+          </div>
+          <button class="start-button" type="button" onclick="startGame()">
+            배송 업무 시작!
+          </button>
         </div>
+      </section>
 
-        <!-- [신규 추가] 게임 시작 가이드 모달 -->
-        <div id="intro-modal" class="hidden absolute inset-0 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-            <div class="bg-white rounded-3xl w-full max-w-sm p-6 shadow-2xl flex flex-col items-center border-t-8 border-amber-400">
-                <div class="text-5xl mb-4">🚁</div>
-                <h3 class="text-xl font-black text-slate-800">배송 업무 안내</h3>
-                <p class="text-slate-600 text-sm mt-3 text-center leading-relaxed">
-                    본부에서 배송 신호가 떨어지면!<br>
-                    정확한 <b>(x, y) 좌표</b>를 읽고 기입하세요.<br><br>
-                    2단계에서는 지도의 교점을 <b>직접 터치</b>하여<br>
-                    드론을 안전하게 배송시키면 미션 성공입니다!
-                </p>
-                <button onclick="startActualGame()" class="w-full mt-6 bg-amber-400 hover:bg-amber-500 text-slate-900 font-black py-4 rounded-2xl shadow-lg border-b-4 border-amber-600 active:border-b-0 active:translate-y-[4px] transition-all">
-                    배송 현장으로 출발! ▶
-                </button>
+      <section id="screen-play" class="screen screen-play hidden">
+        <header class="play-header">
+          <button class="round-button" type="button" onclick="goToHome()" aria-label="홈으로">
+            🏠
+          </button>
+          <div class="progress-wrap">
+            <div class="mission-title" id="mission-title">배송 준비</div>
+            <div class="progress-track">
+              <div id="progress-bar" class="progress-bar"></div>
             </div>
-        </div>
+          </div>
+          <div class="level-badge">Lv.<span id="level">1</span></div>
+        </header>
 
+        <main class="play-main">
+          <section class="map-area">
+            <canvas id="game-board" width="720" height="720"></canvas>
+          </section>
+
+          <aside class="control-panel">
+            <div class="stats">
+              <div>
+                <span>점수</span>
+                <strong id="score">0</strong>
+              </div>
+              <div>
+                <span>콤보</span>
+                <strong id="combo">0</strong>
+              </div>
+              <div>
+                <span>시간</span>
+                <strong id="timer">90</strong>
+              </div>
+            </div>
+
+            <div class="mission-box" id="mission-box">
+              <p class="mission-kicker" id="phase-label">배송 요청</p>
+              <p id="mission-clue" class="mission-clue"></p>
+              <p id="selected-point" class="selected-point">선택 좌표: 없음</p>
+            </div>
+
+            <div class="coord-inputs" id="coord-inputs" aria-label="순서쌍 입력">
+              <span class="pair-mark">(</span>
+              <label class="coord-field">
+                <span>x좌표</span>
+                <input id="x-input" type="number" inputmode="numeric" min="-5" max="5" step="1" placeholder="x" />
+              </label>
+              <span class="pair-mark comma">,</span>
+              <label class="coord-field">
+                <span>y좌표</span>
+                <input id="y-input" type="number" inputmode="numeric" min="-5" max="5" step="1" placeholder="y" />
+              </label>
+              <span class="pair-mark">)</span>
+            </div>
+
+            <div class="button-grid">
+              <button id="deliver-button" class="deliver-button" type="button">요청 수락</button>
+              <button class="help-button" type="button" onclick="openHelpModal()">가이드</button>
+            </div>
+
+            <p id="feedback" class="feedback" aria-live="polite"></p>
+          </aside>
+        </main>
+      </section>
+
+      <div id="help-modal" class="modal hidden">
+        <div class="modal-card guide-card">
+          <div class="modal-icon">🧭</div>
+          <h2>좌표평면 가이드</h2>
+          <p>
+            순서쌍은 항상 <b>(x좌표, y좌표)</b> 순서로 씁니다.
+            x좌표는 좌우 위치, y좌표는 위아래 위치를 나타냅니다.
+          </p>
+          <button type="button" onclick="closeHelpModal()">확인완료! 다시 배송하기</button>
+        </div>
+      </div>
+
+      <div id="intro-modal" class="modal hidden">
+        <div class="modal-card intro-card">
+          <div class="modal-icon">🚁</div>
+          <h2>배송 업무 안내</h2>
+          <p>
+            먼저 지도에서 반짝이는 <b>배송요청</b> 지점의 순서쌍을 입력해
+            요청을 수락하세요. 그 다음 편지지에 적힌 목적지 순서쌍을 보고
+            좌표평면 위에서 알맞은 점을 찍으면 배송완료입니다.
+          </p>
+          <button type="button" onclick="startActualGame()">배송 현장으로 출발!</button>
+        </div>
+      </div>
     </div>
 
-    <!-- 오디오 이펙트 대체용 Web Audio API 음향 생성기 -->
-<!-- ... existing code ... -->
-        // 게임 시작 (안내 모달 띄우기)
-        function startGame() {
-            document.getElementById('intro-modal').classList.remove('hidden');
-        }
-
-        // 실제 게임 로직 시작
-        function startActualGame() {
-            document.getElementById('intro-modal').classList.add('hidden');
-            document.getElementById('screen-home').classList.add('hidden');
-            document.getElementById('screen-play').classList.remove('hidden');
-            
-            gameState.score = 0;
-            gameState.combo = 0;
-            gameState.maxCombo = 0;
-            gameState.successCount = 0;
-            gameState.totalSuccessCount = 0;
-            gameState.totalDeliveryTime = 0;
-            gameState.level = 1;
-
-            resizeCanvas();
-            loadLevel(1);
-        }
-
-        // 레벨 전환
-        function loadLevel(lv) {
-<!-- ... existing code ... -->
-```
-
-### 주요 변경 사항:
-1.  **홈 버튼 추가**: 게임 플레이 화면(`screen-play`) 상단바 왼쪽에 홈 아이콘 버튼(`🏠`)을 배치했습니다. 클릭 시 `goToHome()` 함수가 실행되어 메인 화면으로 돌아갑니다.
-2.  **시작 가이드 모달(`intro-modal`)**: `startGame()`을 호출하면 바로 게임이 시작되지 않고, 게임 규칙을 짧게 설명하는 모달이 먼저 뜹니다.
-3.  **로직 분리**: 기존 `startGame()` 로직을 모달을 여는 함수로 변경하고, 실제 게임 시작 로직은 `startActualGame()`으로 옮겼습니다.
-
-수정된 내용을 코드 파일에 적용해 보세요! 잘 작동할 것입니다.
+    <script src="script.js"></script>
+  </body>
+</html>
